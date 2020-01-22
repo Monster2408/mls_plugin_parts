@@ -1,0 +1,30 @@
+import org.bukkit.entity.Player;
+
+import static sneakingList;
+
+public class SneakLibrary {
+
+    public static void handleSneak(Player player) {
+        if(SneakLibrary.isSneaking(player.getName()))
+            stopSneak(player);
+        else
+            startSneak(player);
+    }
+
+    public static boolean isSneaking(String playerName) {
+        return sneakingList.contains(playerName);
+    }
+
+    public static void startSneak(Player player) {
+        player.setSneaking(true);
+        if(!sneakingList.contains(player.getName()))
+            sneakingList.add(player.getName());
+    }
+
+    public static void stopSneak(Player player) {
+        player.setSneaking(false);
+        if(sneakingList.contains(player.getName()))
+            sneakingList.remove(player.getName());
+    }
+
+}
