@@ -1,0 +1,92 @@
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import static players;
+
+public class TeamSystem {
+
+    static public void addPlayer(Player player, Team team) {
+        players.put(player.getUniqueId().toString(), team);
+    }
+
+    static public void addPlayer(UUID uuid, Team team) {
+        players.put(uuid.toString(), team);
+    }
+
+    static public void addPlayer(String uuid, Team team) {
+        players.put(uuid, team);
+    }
+
+    static public void leavePlayer(Player player) {
+        players.remove(player.getUniqueId().toString());
+    }
+
+    static public void leavePlayer(UUID uuid) {
+        players.remove(uuid.toString());
+    }
+
+    static public void leavePlayer(String uuid) {
+        players.remove(uuid);
+    }
+
+    static public void createTeam(Team team) {
+        for (String uuid : players.keySet()) {
+            if (players.get(uuid) == Team.DEMON) {
+                players.remove(uuid);
+            }
+            if (players.get(uuid) == Team.FUGITIVE) {
+                players.remove(uuid);
+            }
+            if (players.get(uuid) == Team.JAIL) {
+                players.remove(uuid);
+            }
+            if (players.get(uuid) == Team.ADMIN) {
+                players.remove(uuid);
+            }
+        }
+    }
+
+    static public void createAllTeam() {
+        players = new HashMap<>();
+    }
+
+    public static boolean hasTeam(Player player, Team team) {
+        return getTeam(player).equals(team);
+    }
+
+    public static boolean hasTeam(UUID uuid, Team team) {
+        return getTeam(uuid).equals(team);
+    }
+
+    public static boolean hasTeam(String uuid, Team team) {
+        return getTeam(uuid).equals(team);
+    }
+
+    public static List<String> getTeamPlayer(Team team) {
+        List<String> list = new ArrayList<>();
+        for (String uuid : players.keySet()) {
+            if (players.get(uuid) == team) {
+                list.add(uuid);
+            }
+        }
+        return list;
+    }
+
+    public static Team getTeam(String uuid) {
+        return players.get(uuid);
+    }
+
+    public static Team getTeam(Player player) {
+        String uuid = player.getUniqueId().toString();
+        return players.get(uuid);
+    }
+
+    public static Team getTeam(UUID uuid) {
+        return players.get(uuid.toString());
+    }
+
+}
