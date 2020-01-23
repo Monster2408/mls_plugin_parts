@@ -1,0 +1,95 @@
+public class TimerSystem {
+
+    static public void stopTimer() {
+        nowStatus = PAUSED;
+    }
+
+    static public void endTimer() {
+        nowStatus = END;
+    }
+
+    static public void startTimer() {
+        Time = MaxTime;
+        nowStatus = RUN;
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            TitleSender.sendTitle(player, ChatColor.BLUE + "青鬼ゲームスタート", ChatColor.BLUE + "青鬼6.23の館から脱出せよ!!", "");
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERDRAGON_AMBIENT, 1, 1);
+            if (!TeamSystem.getTeamPlayer(Team.DEMON).contains(player.getUniqueId().toString())) {
+                player.teleport(yakata);
+                player.setGameMode(GameMode.SURVIVAL);
+                SneakLibrary.startSneak(player);
+                TeamSystem.addPlayer(player, Team.FUGITIVE);
+            }
+        }
+        initScoreboard();
+    }
+
+    static public void restartTimer() {
+        nowStatus = RUN;
+    }
+
+    private static void initScoreboard(){
+        BukkitRunnable task = new BukkitRunnable() {
+            @Override
+            public void run() {
+                if (nowStatus == RUN) {
+                    for (Player player : Bukkit.getOnlinePlayers()) {
+                        if (Netherboard.instance().getBoard(player) != null) {
+                            Handler.updateScoreboard(player);
+                        }
+                    }
+                    if (Time <= 5) {
+                        Bukkit.broadcastMessage(PLPrefix + ChatColor.AQUA + "残り " + Time + " 秒");
+                        if (Time == 0) {
+                            endTimer();
+                            cancel();
+                            return;
+                        }
+                    }
+                    if (Time == MaxTime - 30) {
+                        for (Player player : Bukkit.getOnlinePlayers()) {
+                            if (TeamSystem.getTeamPlayer(Team.DEMON).contains(player.getUniqueId().toString())) {
+                                player.teleport(yakata);
+                            }
+                        }
+                        Bukkit.broadcastMessage(PLPrefix + ChatColor.AQUA + "青鬼が放出されました。");
+                    }
+                    Time--;
+                }
+            }
+        };
+        task.runTaskTimer(plugin, 0L, 20L);
+    }
+
+    static public void startCountDown() {
+        BukkitRunnable task = new BukkitRunnable() {
+            int countDown = 3;
+            @Override
+            public void run() {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (countDown == 3) {
+                        TitleSender.sendTitle(player, ChatColor.GREEN + "❸", ChatColor.BLUE + "開始まで・・・", "");
+                    }
+                    if (countDown == 2) {
+                        TitleSender.sendTitle(player, ChatColor.GREEN + "❷", ChatColor.BLUE + "開始まで・・・", "");
+                    }
+                    if (countDown == 1) {
+                        TitleSender.sendTitle(player, ChatColor.GREEN + "❶", ChatColor.BLUE + "開始まで・・・", "");
+                    }
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                }
+                if (countDown <= 0) {
+                    startTimer();
+                    cancel();
+                    return;
+                } else {
+                    countDown--;
+                }
+            }
+        };
+        task.runTaskTimer(plugin, 0L, 20L);
+
+    }
+
+
+}
