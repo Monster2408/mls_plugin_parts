@@ -1,0 +1,27 @@
+import org.bukkit.Location;
+import org.bukkit.Material;
+
+public class BlockSystem {
+    
+    public enum BlockPosition {
+        UP,
+        UNDER
+    }
+
+    public static boolean isBlockPosition(Location loc, Material material, BlockPosition blockPosition) {
+        if (blockPosition == BlockPosition.UP)
+            loc.setY(loc.getY() + 1);
+        if (blockPosition == BlockPosition.UNDER)
+            loc.setY(loc.getY() - 1);
+        return loc.getBlock().getType() == material;
+    }
+
+    public static boolean isBlockPosition(Location loc, Material material, BlockPosition blockPosition1, BlockPosition blockPosition2) {
+        if (blockPosition1 == BlockPosition.UP && blockPosition2 == BlockPosition.UP)
+            loc.setY(loc.getY() + 1);
+        if (blockPosition1 == BlockPosition.UNDER && blockPosition2 == BlockPosition.UNDER)
+            loc.setY(loc.getY() - 1);
+        return loc.getBlock().getType() == material;
+    }
+    
+}
