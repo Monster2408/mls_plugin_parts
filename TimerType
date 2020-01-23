@@ -1,0 +1,17 @@
+public enum TimerType {
+
+    PAUSED("一時停止中"),
+    RUN("開始中"),
+    END("終了状態");
+
+    private String timerType;
+
+    TimerType(String timerType) {
+        this.timerType = timerType;
+    }
+
+    public String getStatus() {
+        return timerType;
+    }
+
+}
