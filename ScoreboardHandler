@@ -1,0 +1,30 @@
+public class ScoreboardHandler {
+
+
+    static public void updateScoreboard(Player player) {
+        BPlayerBoard _board = Netherboard.instance().getBoard(player);
+
+        setBoard(_board, "&6&l残り時間 &a: &6&l" + Time + " 秒", 0);
+        setBoard(_board, " ", -1);
+        setBoard(_board, "&6&l残り人数 &a: &6&l" + TeamSystem.getTeamPlayer(Team.FUGITIVE).size() + " 人", -2);
+
+        setBoardName(_board, "&9青鬼ゲーム6.23");
+    }
+
+    public void deleteScoreboard(Player player) {
+        Netherboard.instance().deleteBoard(player);
+    }
+
+    static private void setBoardName(BPlayerBoard board, String text) {
+        board.setName(
+                AooniUtility.replaceColorCode(text)
+        );
+    }
+
+    static private void setBoard(BPlayerBoard board, String text, int i) {
+        board.set(
+                AooniUtility.replaceColorCode(text),
+                i
+        );
+    }
+}
