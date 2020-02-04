@@ -7,6 +7,9 @@ public class SneakLibrary {
     public static ArrayList<String> sneakingList;
 
     public static void handleSneak(Player player) {
+        if (sneakingList == null) {
+            sneakingList = new ArrayList<>();
+        }
         if(SneakLibrary.isSneaking(player.getName()))
             stopSneak(player);
         else
