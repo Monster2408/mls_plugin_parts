@@ -1,3 +1,7 @@
+package xyz.mlserver.aooniv6.aooniv6.API.Util;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
@@ -61,4 +65,25 @@ public class CustomConfig {
         }
     }
 
+    public void setLocation(String path, Location loc) {
+        if (config == null) reloadConfig();
+        try {
+            config.set(path + ".W", loc.getWorld().getName());
+            config.set(path + ".X", loc.getX());
+            config.set(path + ".Y", loc.getY());
+            config.set(path + ".Z", loc.getZ());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Location getLocation(String path) {
+        if (config == null) reloadConfig();
+        return new Location(
+                Bukkit.getWorld(config.getString(path + ".W")),
+                config.getDouble(path + ".X"),
+                config.getDouble(path + ".Y"),
+                config.getDouble(path + ".Z")
+        );
+    }
 }
