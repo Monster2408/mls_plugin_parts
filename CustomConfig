@@ -1,5 +1,3 @@
-package xyz.mlserver.aooniv6.aooniv6.API.Util;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -79,6 +77,8 @@ public class CustomConfig {
 
     public Location getLocation(String path) {
         if (config == null) reloadConfig();
+        if (config.getString(path + ".W") == null) return null;
+        if (Bukkit.getWorld(config.getString(path + ".W")) == null) return null;
         return new Location(
                 Bukkit.getWorld(config.getString(path + ".W")),
                 config.getDouble(path + ".X"),
