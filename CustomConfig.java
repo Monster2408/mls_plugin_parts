@@ -70,6 +70,8 @@ public class CustomConfig {
             config.set(path + ".X", loc.getX());
             config.set(path + ".Y", loc.getY());
             config.set(path + ".Z", loc.getZ());
+            config.set(path + ".Yaw", String.valueOf(loc.getYaw()));
+            config.set(path + ".Pitch", String.valueOf(loc.getPitch()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,11 +81,22 @@ public class CustomConfig {
         if (config == null) reloadConfig();
         if (config.getString(path + ".W") == null) return null;
         if (Bukkit.getWorld(config.getString(path + ".W")) == null) return null;
-        return new Location(
-                Bukkit.getWorld(config.getString(path + ".W")),
-                config.getDouble(path + ".X"),
-                config.getDouble(path + ".Y"),
-                config.getDouble(path + ".Z")
-        );
+        if (config.get(path + ".Yaw") == null && config.get(path + ".Pitch") == null) {
+            return new Location(
+                    Bukkit.getWorld(config.getString(path + ".W")),
+                    config.getDouble(path + ".X"),
+                    config.getDouble(path + ".Y"),
+                    config.getDouble(path + ".Z")
+            );
+        } else {
+            return new Location(
+                    Bukkit.getWorld(config.getString(path + ".W")),
+                    config.getDouble(path + ".X"),
+                    config.getDouble(path + ".Y"),
+                    config.getDouble(path + ".Z"),
+                    Float.parseFloat(config.getString(path + ".Yaw")),
+                    Float.parseFloat(config.getString(path + ".Pitch"))
+            );
+        }
     }
 }
